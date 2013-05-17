@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datastore-indexes autoGenerate="false">
+    <datastore-index kind="DailyTrend" ancestor="false" source="manual">
+        <property name="word" direction="asc" />
+        <property name="createdAt" direction="asc" />
+    </datastore-index>
+    <datastore-index kind="DailyTrend" ancestor="false" source="manual">
+        <property name="createdAt" direction="asc"/>
+        <property name="count" direction="desc"/>
+    </datastore-index>
+    <datastore-index kind="HourlyTrend" ancestor="false" source="manual">
+        <property name="createdAt" direction="asc"/>
+        <property name="hour" direction="asc"/>
+    </datastore-index>
+    <datastore-index kind="HourlyTrend" ancestor="false" source="manual">
+        <property name="createdAt" direction="asc"/>
+        <property name="word" direction="asc"/>
+        <property name="hour" direction="asc"/>
+    </datastore-index>
+    <datastore-index kind="HourlyTrend" ancestor="false" source="manual">
+        <property name="word" direction="asc"/>
+        <property name="createdAt" direction="asc"/>
+    </datastore-index>
+    <datastore-index kind="HourlyTrend" ancestor="false" source="manual">
+        <property name="word" direction="asc"/>
+        <property name="createdAt" direction="asc"/>
+        <property name="hour" direction="asc"/>
+    </datastore-index>
+</datastore-indexes>

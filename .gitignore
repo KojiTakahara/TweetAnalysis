@@ -1,0 +1,5 @@
+*.class
+*.bin
+*/setting.txt
+test/
+www-test/WEB-INF/appengine-generated/datastore-indexes-auto.xml

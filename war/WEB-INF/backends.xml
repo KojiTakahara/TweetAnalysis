@@ -1,0 +1,10 @@
+<backends>
+<!--
+  <backend name="small">
+    <class>B1</class>
+   <options>
+     <dynamic>true</dynamic>
+   </options>
+  </backend>
+-->
+</backends>

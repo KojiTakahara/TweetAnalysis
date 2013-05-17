@@ -1,0 +1,13 @@
+<!-- Indices written at Thu, 10 Jan 2013 12:08:15 JST -->
+
+<datastore-indexes>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Trend" ancestor="false" source="auto">
+        <property name="day" direction="asc"/>
+        <property name="month" direction="asc"/>
+        <property name="year" direction="asc"/>
+        <property name="count" direction="desc"/>
+    </datastore-index>
+
+</datastore-indexes>

@@ -23,7 +23,7 @@ public class AnalysisService {
     public List<String> getSurfaceForm(String text) {
         List<String> results = new ArrayList<String>();
         try {
-            builder.userDictionary("userdic.txt");
+            builder.userDictionary("war/userdic.txt");
         } catch (FileNotFoundException e) {
             log.warning("file not found");
         } catch (IOException e) {
@@ -40,7 +40,7 @@ public class AnalysisService {
     }
     private boolean isWord(Token token) {
         String[] parts = token.getPartOfSpeech().split(",");
-        if (parts[0].matches("名詞") && !parts[1].matches("非自立") && !isSymbol(token)) {
+        if (parts[0].matches(".*名詞.*") && (!parts[1].matches("非自立") || !parts[1].matches("代名詞")) && !isSymbol(token)) {
             log.info(token.getSurfaceForm() + " : " + Arrays.toString(parts));
             return Boolean.TRUE;
         }

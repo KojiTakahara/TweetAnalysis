@@ -1,8 +1,8 @@
 package github.com.service;
 
 import github.com.model.DailyTrend;
-import github.com.model.HourlyTrend;
 import github.com.util.Constant;
+import github.com.util.DateUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -18,8 +18,6 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import org.slim3.util.DateUtil;
 
 public class MailService {
 
@@ -56,7 +54,8 @@ public class MailService {
             Message msg = new MimeMessage(session);
             msg.setFrom(from);
             msg.addRecipient(Message.RecipientType.TO, to);
-            ((MimeMessage) msg).setSubject(new Date().toString(), "UTF-8");
+            Date yesterday = DateUtil.addDay(DateUtil.getDate(), -1);
+            ((MimeMessage) msg).setSubject(DateUtil.toString(yesterday, "MM月dd日") + "のトレンド", "UTF-8");
             msg.setText(text);
             Transport.send(msg);
         } catch (AddressException e) {
@@ -69,7 +68,7 @@ public class MailService {
     }
     private String getData() {
         TrendService trendService = new TrendService();
-        Calendar calendar = DateUtil.toCalendar(new Date());
+        Calendar calendar = DateUtil.getCalendar();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.add(Calendar.DAY_OF_MONTH, -1);
         List<Object> base = new ArrayList<Object>();
@@ -80,18 +79,12 @@ public class MailService {
             objects.add("'" + i + "時'");
             lists.add(objects);
         }
-        // dailyからその日のトップ10を取得する
-        List<DailyTrend> dailyTrends = trendService.findDailyTrendByDate(calendar, 10);
+        // dailyからその日のトップ5を取得する
+        List<DailyTrend> dailyTrends = trendService.findDailyTrendByDate(calendar, 5);
         for (DailyTrend dailyTrend : dailyTrends) {
             base.add("'" + dailyTrend.getWord() + "'");
-            for (int i = 0; i < 24; i++) {
-                lists.get(i).add(0);
-            }
-            // トップ10の時間帯データを取得する
-            List<HourlyTrend> hourlyTrends = trendService.findHourlyTrendByHourlyWord(dailyTrend.getWord(), calendar);
-            for (int i = 0; i < hourlyTrends.size(); i++) {
-                List<Object> objects = lists.get(hourlyTrends.get(i).getHour());
-                objects.set(objects.size() - 1, hourlyTrends.get(i).getCount());
+            for (int i = 0; i < dailyTrend.getHoursCount().size(); i++) {
+                lists.get(i).add(dailyTrend.getHoursCount().get(i));
             }
         }
         StringBuilder sb = new StringBuilder(base.toString());

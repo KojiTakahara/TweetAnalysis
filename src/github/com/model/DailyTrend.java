@@ -1,12 +1,14 @@
 package github.com.model;
 
+import github.com.meta.DailyTrendMeta;
+
 import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
 
 import com.google.appengine.api.datastore.Key;
 
 import org.slim3.datastore.Attribute;
-import org.slim3.datastore.CreationDate;
+import org.slim3.datastore.Datastore;
 import org.slim3.datastore.Model;
 
 @Model(schemaVersion = 1)
@@ -16,23 +18,35 @@ public class DailyTrend implements Serializable {
 
     @Attribute(primaryKey = true)
     private Key key;
-    @Attribute(version = true)
-    private Long version;
     private String word;
     private Integer count;
-    @Attribute(listener = CreationDate.class)
-    private Date createdAt;
+    private String ymd;
+    private List<Integer> hoursCount;
+
+    @Deprecated
+    public DailyTrend() {
+        super();
+    }
+    
+    public DailyTrend(Key key) {
+        super();
+        this.key = key;
+    }
+
+    public static Key createKey(String word, String ymd) {
+        return Datastore.createKey(DailyTrendMeta.get(), word + "@" + ymd);
+    }
 
     public Key getKey() { return key; }
     public void setKey(Key key) { this.key = key; }
-    public Long getVersion() { return version; }
-    public void setVersion(Long version) { this.version = version; }
     public String getWord() { return word; }
     public void setWord(String word) { this.word = word; }
     public Integer getCount() { return count; }
     public void setCount(Integer count) { this.count = count; }
-    public Date getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+    public String getYmd() { return ymd; }
+    public void setYmd(String ymd) { this.ymd = ymd; }
+    public List<Integer> getHoursCount() { return hoursCount; }
+    public void setHoursCount(List<Integer> hoursCount) { this.hoursCount = hoursCount; }
 
     @Override
     public int hashCode() {

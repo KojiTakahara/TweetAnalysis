@@ -1,9 +1,8 @@
-package github.com.controller.trend;
+package github.com.controller.cron;
 
 import github.com.controller.IndexController;
 import github.com.model.User;
 import github.com.service.AnalysisService;
-import github.com.service.TrendService;
 import github.com.service.TwitterService;
 import github.com.service.UserService;
 import github.com.util.DateUtil;
@@ -20,12 +19,11 @@ import org.slim3.controller.Navigation;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 
-public class HourlySummaryController extends Controller {
+public class TweetAnalysisController extends Controller {
 
     private TwitterService twitterService = new TwitterService();
     private AnalysisService analysisService = new AnalysisService();
     private UserService userService = new UserService();
-    private TrendService trendService = new TrendService();
     private static final Logger log = Logger.getLogger(IndexController.class.getName());
 
     private Map<String, Integer> map;
@@ -36,13 +34,14 @@ public class HourlySummaryController extends Controller {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.HOUR_OF_DAY, -1);
         List<User> users = userService.findAll();
-        for (User user : users) {
+        for (User user : users)
             setMap(user.getName(), calendar);
-        }
         Calendar cal = DateUtil.getCalendar();
         for(Map.Entry<String, Integer> e : this.map.entrySet()) {
             if (1 < e.getKey().length()) {
-                //trendService.registHourlyTrend(e.getKey(), e.getValue(), cal);
+                String ymd = DateUtil.toString(cal.getTime(), "yyyyMMdd");
+                String hour = DateUtil.toString(cal.getTime(), "HH");
+                SummaryController.addPullQueue(e.getKey(), e.getValue(), ymd, hour);
             }
         }
         return null;

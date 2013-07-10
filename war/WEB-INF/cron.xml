@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
   <cron>
+    <url>/cron/tweetAnalysis</url>
+    <description>trend hourly summary</description>
+    <schedule>every 1 hours from 0:01 to 23:01</schedule>
+    <timezone>Asia/Tokyo</timezone>
+  </cron>
+  <cron>
+    <url>/cron/summary</url>
+    <description>trend daily summary</description>
+    <schedule>every day 06:00</schedule>
+    <timezone>Asia/Tokyo</timezone>
+  </cron>
+  <!--
+  <cron>
     <url>/trend/hourlySummary</url>
     <description>trend hourly summary</description>
     <schedule>every 1 hours from 0:01 to 23:01</schedule>
@@ -12,6 +25,7 @@
     <schedule>every day 06:00</schedule>
     <timezone>Asia/Tokyo</timezone>
   </cron>
+  -->
   <cron>
     <url>/?send=true</url>
     <description>write blog</description>

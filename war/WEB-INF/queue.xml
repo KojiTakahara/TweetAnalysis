@@ -8,4 +8,8 @@
     <rate>10/s</rate>
     <bucket-size>10</bucket-size>
   </queue>
+  <queue>
+    <name>summary-queue</name>
+    <mode>pull</mode>
+  </queue>
 </queue-entries>

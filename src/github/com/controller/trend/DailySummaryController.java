@@ -1,6 +1,5 @@
 package github.com.controller.trend;
 
-import github.com.model.HourlyTrend;
 import github.com.service.TrendService;
 import github.com.util.DateUtil;
 
@@ -25,20 +24,20 @@ public class DailySummaryController extends Controller {
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         TrendService trendService = new TrendService();
-        List<HourlyTrend> hourlyTrends = trendService.findHourlyTrendByCreateAt(cal);
-        Set<String> words = new HashSet<String>();
-        for (HourlyTrend hourlyTrend : hourlyTrends)
-            words.add(hourlyTrend.getWord());
-        for (String word : words) {
-            List<HourlyTrend> list = trendService.findHourlyTrendByHourlyWord(word, cal);
-            Integer count = 0;
-            for (HourlyTrend trend : list)
-                count+=trend.getCount();
-            if (1 < count) {
-                log.info("register daily word : " + word + " ("+ count + ")");
-                trendService.registDailyTrend(word, count, cal);
-            }
-        }
+//        List<HourlyTrend> hourlyTrends = trendService.findHourlyTrendByCreateAt(cal);
+//        Set<String> words = new HashSet<String>();
+//        for (HourlyTrend hourlyTrend : hourlyTrends)
+//            words.add(hourlyTrend.getWord());
+//        for (String word : words) {
+//            List<HourlyTrend> list = trendService.findHourlyTrendByHourlyWord(word, cal);
+//            Integer count = 0;
+//            for (HourlyTrend trend : list)
+//                count+=trend.getCount();
+//            if (1 < count) {
+//                log.info("register daily word : " + word + " ("+ count + ")");
+//                trendService.registDailyTrend(word, count, cal);
+//            }
+//        }
         return null;
     }
 }

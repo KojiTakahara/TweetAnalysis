@@ -1,6 +1,6 @@
 package github.com.meta;
 
-//@javax.annotation.Generated(value = { "slim3-gen", "@VERSION@" }, date = "2013-05-17 23:49:13")
+//@javax.annotation.Generated(value = { "slim3-gen", "@VERSION@" }, date = "2013-07-07 21:46:14")
 /** */
 public final class DailyTrendMeta extends org.slim3.datastore.ModelMeta<github.com.model.DailyTrend> {
 
@@ -8,18 +8,16 @@ public final class DailyTrendMeta extends org.slim3.datastore.ModelMeta<github.c
     public final org.slim3.datastore.CoreAttributeMeta<github.com.model.DailyTrend, java.lang.Integer> count = new org.slim3.datastore.CoreAttributeMeta<github.com.model.DailyTrend, java.lang.Integer>(this, "count", "count", java.lang.Integer.class);
 
     /** */
-    public final org.slim3.datastore.CoreAttributeMeta<github.com.model.DailyTrend, java.util.Date> createdAt = new org.slim3.datastore.CoreAttributeMeta<github.com.model.DailyTrend, java.util.Date>(this, "createdAt", "createdAt", java.util.Date.class);
+    public final org.slim3.datastore.CollectionAttributeMeta<github.com.model.DailyTrend, java.util.List<java.lang.Integer>, java.lang.Integer> hoursCount = new org.slim3.datastore.CollectionAttributeMeta<github.com.model.DailyTrend, java.util.List<java.lang.Integer>, java.lang.Integer>(this, "hoursCount", "hoursCount", java.util.List.class);
 
     /** */
     public final org.slim3.datastore.CoreAttributeMeta<github.com.model.DailyTrend, com.google.appengine.api.datastore.Key> key = new org.slim3.datastore.CoreAttributeMeta<github.com.model.DailyTrend, com.google.appengine.api.datastore.Key>(this, "__key__", "key", com.google.appengine.api.datastore.Key.class);
 
     /** */
-    public final org.slim3.datastore.CoreAttributeMeta<github.com.model.DailyTrend, java.lang.Long> version = new org.slim3.datastore.CoreAttributeMeta<github.com.model.DailyTrend, java.lang.Long>(this, "version", "version", java.lang.Long.class);
-
-    /** */
     public final org.slim3.datastore.StringAttributeMeta<github.com.model.DailyTrend> word = new org.slim3.datastore.StringAttributeMeta<github.com.model.DailyTrend>(this, "word", "word");
 
-    private static final org.slim3.datastore.CreationDate slim3_createdAtAttributeListener = new org.slim3.datastore.CreationDate();
+    /** */
+    public final org.slim3.datastore.StringAttributeMeta<github.com.model.DailyTrend> ymd = new org.slim3.datastore.StringAttributeMeta<github.com.model.DailyTrend>(this, "ymd", "ymd");
 
     private static final DailyTrendMeta slim3_singleton = new DailyTrendMeta();
 
@@ -35,14 +33,15 @@ public final class DailyTrendMeta extends org.slim3.datastore.ModelMeta<github.c
         super("DailyTrend", github.com.model.DailyTrend.class);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public github.com.model.DailyTrend entityToModel(com.google.appengine.api.datastore.Entity entity) {
         github.com.model.DailyTrend model = new github.com.model.DailyTrend();
         model.setCount(longToInteger((java.lang.Long) entity.getProperty("count")));
-        model.setCreatedAt((java.util.Date) entity.getProperty("createdAt"));
+        model.setHoursCount(longListToIntegerList(entity.getProperty("hoursCount")));
         model.setKey(entity.getKey());
-        model.setVersion((java.lang.Long) entity.getProperty("version"));
         model.setWord((java.lang.String) entity.getProperty("word"));
+        model.setYmd((java.lang.String) entity.getProperty("ymd"));
         return model;
     }
 
@@ -56,9 +55,9 @@ public final class DailyTrendMeta extends org.slim3.datastore.ModelMeta<github.c
             entity = new com.google.appengine.api.datastore.Entity(kind);
         }
         entity.setProperty("count", m.getCount());
-        entity.setProperty("createdAt", m.getCreatedAt());
-        entity.setProperty("version", m.getVersion());
+        entity.setProperty("hoursCount", m.getHoursCount());
         entity.setProperty("word", m.getWord());
+        entity.setProperty("ymd", m.getYmd());
         entity.setProperty("slim3.schemaVersion", 1);
         return entity;
     }
@@ -78,8 +77,7 @@ public final class DailyTrendMeta extends org.slim3.datastore.ModelMeta<github.c
 
     @Override
     protected long getVersion(Object model) {
-        github.com.model.DailyTrend m = (github.com.model.DailyTrend) model;
-        return m.getVersion() != null ? m.getVersion().longValue() : 0L;
+        throw new IllegalStateException("The version property of the model(github.com.model.DailyTrend) is not defined.");
     }
 
     @Override
@@ -88,15 +86,10 @@ public final class DailyTrendMeta extends org.slim3.datastore.ModelMeta<github.c
 
     @Override
     protected void incrementVersion(Object model) {
-        github.com.model.DailyTrend m = (github.com.model.DailyTrend) model;
-        long version = m.getVersion() != null ? m.getVersion().longValue() : 0L;
-        m.setVersion(Long.valueOf(version + 1L));
     }
 
     @Override
     protected void prePut(Object model) {
-        github.com.model.DailyTrend m = (github.com.model.DailyTrend) model;
-        m.setCreatedAt(slim3_createdAtAttributeListener.prePut(m.getCreatedAt()));
     }
 
     @Override
@@ -127,25 +120,30 @@ public final class DailyTrendMeta extends org.slim3.datastore.ModelMeta<github.c
             writer.setNextPropertyName("count");
             encoder0.encode(writer, m.getCount());
         }
-        if(m.getCreatedAt() != null){
-            writer.setNextPropertyName("createdAt");
-            encoder0.encode(writer, m.getCreatedAt());
+        if(m.getHoursCount() != null){
+            writer.setNextPropertyName("hoursCount");
+            writer.beginArray();
+            for(java.lang.Integer v : m.getHoursCount()){
+                encoder0.encode(writer, v);
+            }
+            writer.endArray();
         }
         if(m.getKey() != null){
             writer.setNextPropertyName("key");
             encoder0.encode(writer, m.getKey());
         }
-        if(m.getVersion() != null){
-            writer.setNextPropertyName("version");
-            encoder0.encode(writer, m.getVersion());
-        }
         if(m.getWord() != null){
             writer.setNextPropertyName("word");
             encoder0.encode(writer, m.getWord());
         }
+        if(m.getYmd() != null){
+            writer.setNextPropertyName("ymd");
+            encoder0.encode(writer, m.getYmd());
+        }
         writer.endObject();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected github.com.model.DailyTrend jsonToModel(org.slim3.datastore.json.JsonRootReader rootReader, int maxDepth, int currentDepth) {
         github.com.model.DailyTrend m = new github.com.model.DailyTrend();
@@ -153,14 +151,29 @@ public final class DailyTrendMeta extends org.slim3.datastore.ModelMeta<github.c
         org.slim3.datastore.json.Default decoder0 = new org.slim3.datastore.json.Default();
         reader = rootReader.newObjectReader("count");
         m.setCount(decoder0.decode(reader, m.getCount()));
-        reader = rootReader.newObjectReader("createdAt");
-        m.setCreatedAt(decoder0.decode(reader, m.getCreatedAt()));
+        reader = rootReader.newObjectReader("hoursCount");
+        {
+            java.util.ArrayList<java.lang.Integer> elements = new java.util.ArrayList<java.lang.Integer>();
+            org.slim3.datastore.json.JsonArrayReader r = rootReader.newArrayReader("hoursCount");
+            if(r != null){
+                reader = r;
+                int n = r.length();
+                for(int i = 0; i < n; i++){
+                    r.setIndex(i);
+                    java.lang.Integer v = decoder0.decode(reader, (java.lang.Integer)null)                    ;
+                    if(v != null){
+                        elements.add(v);
+                    }
+                }
+                m.setHoursCount(elements);
+            }
+        }
         reader = rootReader.newObjectReader("key");
         m.setKey(decoder0.decode(reader, m.getKey()));
-        reader = rootReader.newObjectReader("version");
-        m.setVersion(decoder0.decode(reader, m.getVersion()));
         reader = rootReader.newObjectReader("word");
         m.setWord(decoder0.decode(reader, m.getWord()));
+        reader = rootReader.newObjectReader("ymd");
+        m.setYmd(decoder0.decode(reader, m.getYmd()));
         return m;
     }
 }

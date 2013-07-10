@@ -4,7 +4,6 @@ package github.com.service;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -23,7 +22,7 @@ public class AnalysisService {
     public List<String> getSurfaceForm(String text) {
         List<String> results = new ArrayList<String>();
         try {
-            builder.userDictionary("war/userdic.txt");
+            builder.userDictionary("WEB-INF/userdic.txt");
         } catch (FileNotFoundException e) {
             log.warning("file not found");
         } catch (IOException e) {
@@ -40,11 +39,16 @@ public class AnalysisService {
     }
     private boolean isWord(Token token) {
         String[] parts = token.getPartOfSpeech().split(",");
-        if (parts[0].matches(".*名詞.*") && (!parts[1].matches("非自立") || !parts[1].matches("代名詞")) && !isSymbol(token)) {
-            log.info(token.getSurfaceForm() + " : " + Arrays.toString(parts));
+        if (parts[0].matches(".*名詞.*") && checkPart1(parts) && !isSymbol(token)) {
+            //log.info(token.getSurfaceForm() + " : " + Arrays.toString(parts));
             return Boolean.TRUE;
         }
         return Boolean.FALSE;
+    }
+    private boolean checkPart1(String[] parts) {
+        return !parts[1].matches(".*非自立.*") && 
+               !parts[1].matches(".*代名詞.*") &&
+               !parts[1].matches(".*接尾.*");
     }
     private boolean isSymbol(Token token) {
         Pattern pattern = Pattern.compile("^[\\p{Punct}]*$");

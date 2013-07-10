@@ -26,4 +26,9 @@
         <property name="createdAt" direction="asc"/>
         <property name="hour" direction="asc"/>
     </datastore-index>
+    <!-- add 130708 -->
+    <datastore-index kind="DailyTrend" ancestor="false" source="manual">
+        <property name="ymd" direction="asc"/>
+        <property name="count" direction="desc"/>
+    </datastore-index>
 </datastore-indexes>

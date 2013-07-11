@@ -73,10 +73,16 @@ public class SummaryController extends Controller {
     private void setMap(Map<String, Map<String, Object>> resultMap) throws UnsupportedEncodingException {
         Queue queue = QueueFactory.getQueue(QUEUE_NAME);
         List<TaskHandle> tasks = queue.leaseTasks(LEASE_SENCOND, TimeUnit.SECONDS, TASK_COUNT);
-        while (0 < tasks.size()) {
+        String todayStr = DateUtil.toString(DateUtil.getDate(), "yyyyMMdd");
+        int minSize = 0;
+        while (minSize < tasks.size()) {
             log.info("task size : " + tasks.size());
             for (TaskHandle task : tasks) {
                 Map<String, String> paramMap = getParameterMap(task.getPayload());
+                if (paramMap.get(YMD).equals(todayStr)) {
+                    minSize++;
+                    continue;
+                }
                 String word = StringUtil.decode(paramMap.get(WORD), StringUtil.UTF8);
                 Map<String, Object> wordMap = resultMap.get(word);
                 if (wordMap == null) {

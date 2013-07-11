@@ -1,6 +1,7 @@
 package github.com.controller.cron;
 
 import github.com.model.DailyTrend;
+import github.com.util.DateUtil;
 import github.com.util.StringUtil;
 
 import java.io.UnsupportedEncodingException;
@@ -76,7 +77,7 @@ public class SummaryController extends Controller {
         String todayStr = DateUtil.toString(DateUtil.getDate(), "yyyyMMdd");
         int minSize = 0;
         while (minSize < tasks.size()) {
-            log.info("task size : " + tasks.size());
+            log.info("task size : " + tasks.size() + "  " + "skip task size : " + minSize);
             for (TaskHandle task : tasks) {
                 Map<String, String> paramMap = getParameterMap(task.getPayload());
                 if (paramMap.get(YMD).equals(todayStr)) {
@@ -92,13 +93,15 @@ public class SummaryController extends Controller {
                     for (int i = 0; i < 24; i++) {
                         wordMap.put(String.format("%1$02d", i), 0);
                     }
+                } else {
+                    log.info("MAP NotNull : " + word);
                 }
                 Integer count = Integer.valueOf(wordMap.get(COUNT).toString());
                 wordMap.put(COUNT, count + Integer.valueOf(paramMap.get(COUNT)));
                 String hourStr = paramMap.get(HOUR);
                 String hourCountStr = wordMap.get(hourStr).toString();
-                //log.info("word : " + word + "  hour : " + hourStr + "  count : " + hourCountStr);
                 wordMap.put(hourStr, Integer.valueOf(hourCountStr) + 1);
+                log.info(word + " : " + hourStr + "(" + wordMap.get(hourStr) + ")");
                 resultMap.put(word, wordMap);
                 queue.deleteTask(task);
             }
@@ -109,7 +112,7 @@ public class SummaryController extends Controller {
     private Map<String, String> getParameterMap(byte[] b) {
         String[] params = {};
         try {
-            params = new String(b, "UTF-8").split("&");
+            params = new String(b, StringUtil.UTF8).split("&");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

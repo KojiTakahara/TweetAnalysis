@@ -93,14 +93,13 @@ public class SummaryController extends Controller {
                     for (int i = 0; i < 24; i++) {
                         wordMap.put(String.format("%1$02d", i), 0);
                     }
-                } else {
-                    log.info("MAP NotNull : " + word);
                 }
                 Integer count = Integer.valueOf(wordMap.get(COUNT).toString());
-                wordMap.put(COUNT, count + Integer.valueOf(paramMap.get(COUNT)));
+                Integer addCount = Integer.valueOf(paramMap.get(COUNT));
+                wordMap.put(COUNT, count + addCount);
                 String hourStr = paramMap.get(HOUR);
                 String hourCountStr = wordMap.get(hourStr).toString();
-                wordMap.put(hourStr, Integer.valueOf(hourCountStr) + 1);
+                wordMap.put(hourStr, Integer.valueOf(hourCountStr) + addCount);
                 log.info(word + " : " + hourStr + "(" + wordMap.get(hourStr) + ")");
                 resultMap.put(word, wordMap);
                 queue.deleteTask(task);
